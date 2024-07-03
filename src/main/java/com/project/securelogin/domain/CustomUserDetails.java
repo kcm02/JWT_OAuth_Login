@@ -11,13 +11,14 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final String username;
-    private final String password;
-    private final boolean accountNonExpired;
-    private final boolean accountNonLocked;
-    private final boolean credentialsNonExpired;
-    private final boolean enabled;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private final String username; // 사용자 이름
+    private final String password; // 비밀번호
+    private final String email; // 이메일
+    private final boolean accountNonExpired; // 계정 만료 여부
+    private final boolean accountNonLocked; // 계정 잠김 여부
+    private final boolean credentialsNonExpired; // 자격 증명 만료 여부
+    private final boolean enabled; // 계정 활성화 여부
+    private final Collection<? extends GrantedAuthority> authorities; // 사용자 권한 목록
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
