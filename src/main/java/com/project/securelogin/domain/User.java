@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
     private String username;
@@ -35,5 +35,10 @@ public class User {
 
     @UpdateTimestamp
     private LocalDateTime updated_at;
+
+    private boolean accountNonExpired; // 계정 만료 여부
+    private boolean accountNonLocked; // 계정 잠김 여부
+    private boolean credentialsNonExpired; // 자격 증명 만료 여부
+    private boolean enabled; // 계정 활성화 여부
 
 }
