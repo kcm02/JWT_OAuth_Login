@@ -1,0 +1,28 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: secure-login
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/secure_login
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+jwt:
+  secret: y7ASs-xN-JOwzNVKfIWVmQsWhTa7FHIw0aZ4JPiB6Sk
+  token-validity-in-seconds: 3600
+  refresh-token-validity-in-seconds: 86400 # 유효 기간: 하루
