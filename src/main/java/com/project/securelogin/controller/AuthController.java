@@ -20,20 +20,10 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<Response> login(@RequestBody AuthRequest authRequest) {
         try {
-            authService.login(authRequest.getEmail(), authRequest.getPassword());
+            HttpHeaders headers = authService.login(authRequest.getEmail(), authRequest.getPassword());
 
-            // Redis에서 토큰을 가져오기 위해 다시 호출
-            String accessToken = authService.getAccessToken(authRequest.getEmail());
-            String refreshToken = authService.getRefreshToken(authRequest.getEmail());
-
-            // 헤더 설정
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-            headers.add("Refresh-Token", refreshToken);
-
-            // 응답 본문 설정
             Response response = new Response(HttpStatus.OK.value(),  "로그인에 성공했습니다.");
 
             return ResponseEntity.ok()
