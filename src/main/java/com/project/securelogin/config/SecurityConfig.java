@@ -6,7 +6,6 @@ import com.project.securelogin.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,13 +52,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .permitAll() // 로그인 페이지는 누구나 접근 가능
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
-                // 로그아웃 설정
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // 로그아웃 URL 설정
-                        .logoutSuccessUrl("/login?logout") // 로그아웃 성공 시 이동할 페이지 설정
-                        .permitAll() // 로그아웃은 누구나 접근 가능
-                );
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

@@ -7,10 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +30,17 @@ public class AuthController {
             Response errorResponse = new Response(HttpStatus.UNAUTHORIZED.value(), "이메일 주소나 비밀번호가 올바르지 않습니다.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(errorResponse);
+        }
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(name = "Refresh-Token") String refreshToken) {
+        boolean logoutSuccess = authService.logout(refreshToken);
+
+        if (logoutSuccess) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // or INTERNAL_SERVER_ERROR
         }
     }
 

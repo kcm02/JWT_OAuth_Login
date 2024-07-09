@@ -24,5 +24,5 @@ spring:
 
 jwt:
   secret: y7ASs-xN-JOwzNVKfIWVmQsWhTa7FHIw0aZ4JPiB6Sk
-  token-validity-in-seconds: 3600
+  token-validity-in-seconds: 1800 # 유효 기간: 30분
   refresh-token-validity-in-seconds: 86400 # 유효 기간: 하루
