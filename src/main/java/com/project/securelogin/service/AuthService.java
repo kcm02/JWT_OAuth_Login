@@ -37,4 +37,10 @@ public class AuthService {
             throw new AuthenticationException("Authentication failed: " + e.getMessage()) {};
         }
     }
+
+    // Refresh 토큰을 블랙리스트에 추가하고, 성공적으로 추가되면 true를 반환한다.
+    public boolean logout(String token) {
+        return jwtTokenProvider.blacklistRefreshToken(token);
+    }
+
 }
