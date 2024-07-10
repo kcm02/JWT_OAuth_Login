@@ -1,5 +1,6 @@
 package com.project.securelogin.controller;
 
+import com.project.securelogin.dto.JsonResponse;
 import com.project.securelogin.service.AuthService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,30 +18,32 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Response> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<JsonResponse> login(@RequestBody AuthRequest authRequest) {
         try {
             HttpHeaders headers = authService.login(authRequest.getEmail(), authRequest.getPassword());
 
-            Response response = new Response(HttpStatus.OK.value(),  "로그인에 성공했습니다.");
+            JsonResponse response = new JsonResponse(HttpStatus.OK.value(),  "로그인에 성공했습니다.", null);
 
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(response);
         } catch (AuthenticationException e) {
-            Response errorResponse = new Response(HttpStatus.UNAUTHORIZED.value(), "이메일 주소나 비밀번호가 올바르지 않습니다.");
+            JsonResponse errorResponse = new JsonResponse(HttpStatus.UNAUTHORIZED.value(), "이메일 주소나 비밀번호가 올바르지 않습니다.", null);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(errorResponse);
         }
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader(name = "Refresh-Token") String refreshToken) {
+    public ResponseEntity<JsonResponse> logout(@RequestHeader(name = "Refresh-Token") String refreshToken) {
         boolean logoutSuccess = authService.logout(refreshToken);
 
         if (logoutSuccess) {
-            return ResponseEntity.noContent().build(); // 204 No Content
+            JsonResponse response = new JsonResponse(HttpStatus.NO_CONTENT.value(), "성공적으로 로그아웃되었습니다.", null);
+            return ResponseEntity.ok().body(response); // 204 No Content
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // or INTERNAL_SERVER_ERROR
+            JsonResponse errorResponse = new JsonResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "잘못된 접근입니다.", null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse); // or INTERNAL_SERVER_ERROR
         }
     }
 
@@ -50,14 +53,4 @@ public class AuthController {
         private String password;
     }
 
-    @Getter
-    public static class Response {
-        private int statusCode;
-        private String message;
-
-        public Response(int statusCode, String message) {
-            this.statusCode = statusCode;
-            this.message = message;
-        }
-    }
 }
