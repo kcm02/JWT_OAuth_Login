@@ -43,9 +43,13 @@ public class User {
     private boolean credentialsNonExpired; // 자격 증명 만료 여부
     private boolean enabled; // 계정 활성화 여부
 
-    public void updateUser(UserRequestDTO requestDTO, PasswordEncoder passwordEncoder) {
+    private String mailVerificationToken; // 이메일 인증 토큰
+
+    public void updateUser(UserRequestDTO requestDTO, PasswordEncoder passwordEncoder,String mailVerificationToken) {
         this.username = requestDTO.getUsername();
         this.email = requestDTO.getEmail();
+        this.mailVerificationToken = mailVerificationToken;
+        this.enabled = false;
 
         // 새로운 비밀번호가 null이 아니고, 기존 비밀번호와 다를 때만 인코딩하여 업데이트
         if (requestDTO.getPassword() != null && !requestDTO.getPassword().equals(this.password)) {
@@ -53,5 +57,9 @@ public class User {
         }
     }
 
+    public void enableAccount() {
+        this.enabled = true;
+        this.mailVerificationToken = null;
+    }
 
 }
