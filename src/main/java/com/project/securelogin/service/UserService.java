@@ -3,7 +3,6 @@ package com.project.securelogin.service;
 import com.project.securelogin.domain.User;
 import com.project.securelogin.dto.UserRequestDTO;
 import com.project.securelogin.dto.UserResponseDTO;
-import com.project.securelogin.mail.MailService;
 import com.project.securelogin.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
