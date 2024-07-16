@@ -64,4 +64,13 @@ public class UserController {
         }
     }
 
+    // 이메일 인증
+    @GetMapping("/verify/{token}")
+    public ResponseEntity<JsonResponse> verifyEmail(@PathVariable String token) {
+        UserResponseDTO userResponseDTO = userService.verifyEmail(token);
+        JsonResponse response = new JsonResponse(HttpStatus.OK.value(), "이메일 인증이 완료되었습니다.", userResponseDTO);
+        return ResponseEntity.ok(response);
+    }
+
+
 }

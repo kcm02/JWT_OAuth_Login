@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### YML 파일 제외 ###
+*.yml
+!application.yml
+
 ### STS ###
 .apt_generated
 .classpath

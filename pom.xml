@@ -109,6 +109,19 @@
             <version>2.3.1</version>
         </dependency>
 
+        <!-- JavaMailSender -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- JUnit 5 의존성 추가 -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.8.2</version> <!-- 최신 버전으로 업데이트 -->
+            <scope>test</scope>
+        </dependency>
 
 
 
