@@ -20,9 +20,14 @@ public class UserController {
     @PostMapping("/signup")
     // @Valid 어노테이션을 사용해 `SignUpRequest`의 유효성 검사를 활성화, 통과한 경우 서비스 코드 호출
     public ResponseEntity<JsonResponse> signUp(@Valid @RequestBody UserRequestDTO userRequestDTO) {
-        UserResponseDTO userResponseDTO = userService.signUp(userRequestDTO);
-        JsonResponse response = new JsonResponse(HttpStatus.CREATED.value(), "회원 가입이 성공적으로 실행되었습니다.", userResponseDTO);
-        return ResponseEntity.ok().body(response);
+        try {
+            UserResponseDTO userResponseDTO = userService.signUp(userRequestDTO);
+            JsonResponse response = new JsonResponse(HttpStatus.CREATED.value(), "회원 가입이 성공적으로 실행되었습니다. 이메일 인증을 완료해주세요.", userResponseDTO);
+            return ResponseEntity.ok().body(response);
+        } catch (IllegalStateException e) {
+            JsonResponse errorResponse = new JsonResponse(HttpStatus.BAD_REQUEST.value(), "이미 등록된 이메일입니다.", null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     // 회원 정보 조회
@@ -43,7 +48,7 @@ public class UserController {
     public ResponseEntity<JsonResponse> updateUser(@PathVariable Long userId, @Valid @RequestBody UserRequestDTO userRequestDTO) {
         try {
             UserResponseDTO userResponseDTO = userService.updateUser(userId, userRequestDTO);
-            JsonResponse response = new JsonResponse(HttpStatus.OK.value(), "회원 정보를 성공적으로 수정했습니다.", userResponseDTO);
+            JsonResponse response = new JsonResponse(HttpStatus.OK.value(), "회원 정보를 성공적으로 수정했습니다. 이메일 인증을 완료해주세요.", userResponseDTO);
             return ResponseEntity.ok().body(response);
         } catch (IllegalStateException e) {
             JsonResponse errorResponse = new JsonResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);

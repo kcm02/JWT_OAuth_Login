@@ -120,7 +120,7 @@ public class JwtTokenProvider {
     // JWT 토큰 생성
     private String generateToken(Authentication authentication, long validitySeconds) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Claims claims = Jwts.claims().setSubject(userDetails.getEmail());
+        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validitySeconds * 1000);

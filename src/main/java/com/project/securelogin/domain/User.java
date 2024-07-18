@@ -45,6 +45,9 @@ public class User {
 
     private String mailVerificationToken; // 이메일 인증 토큰
 
+    private int failedLoginAttempts; // 로그인 시도 횟수
+    private LocalDateTime lockTime; // 계정 잠금 해제 시간
+
     public void updateUser(UserRequestDTO requestDTO, PasswordEncoder passwordEncoder,String mailVerificationToken) {
         this.username = requestDTO.getUsername();
         this.email = requestDTO.getEmail();
@@ -60,6 +63,36 @@ public class User {
     public void enableAccount() {
         this.enabled = true;
         this.mailVerificationToken = null;
+    }
+
+    // 로그인 실패 시 로그인 시도 횟수 증가
+    public void incrementFailedLoginAttempts() {
+        this.failedLoginAttempts++;
+    }
+
+    // 로그인 성공 시 로그인 시도 횟수 초기화
+    public void resetFailedLoginAttempts() {
+        this.failedLoginAttempts = 0;
+    }
+
+    // 계정 잠금
+    public void lockAccount() {
+        this.accountNonLocked = false;
+        this.lockTime = LocalDateTime.now();
+    }
+
+    // 계정 잠금 풀기
+    public void unlockAccount() {
+        this.accountNonLocked = true;
+        this.lockTime = null;
+    }
+
+    public boolean isLockTimeExpired(int lockDurationMinutes) {
+        if (this.lockTime == null) {
+            return true; // 잠금 시간이 없으면 바로 해제 가능
+        }
+        LocalDateTime expiryTime = this.lockTime.plusMinutes(lockDurationMinutes);
+        return expiryTime.isBefore(LocalDateTime.now()); // 현재 시간이 잠금 만료 시간 이전이면 해제 가능
     }
 
 }
