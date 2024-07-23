@@ -123,6 +123,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- OAuth2 의존성 추가 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- jasypt (데이터 암호화) -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
 
 
     </dependencies>
