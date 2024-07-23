@@ -4,14 +4,28 @@ server:
 spring:
   profiles:
     group:
-      local: db, jwt, mail
+      local: db, jwt, mail, oauth
     active: local
   application:
     name: secure-login
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+logging:
+  level:
+    org.jasypt: DEBUG
+
+jasypt:
+  encryptor:
+    password: ${ENCRYPT_KEY}
+    algorithm: PBEWithMD5AndDES
+    key-obtention-iterations: 1000
+    pool-size: 1
+    salt-generator-classname: org.jasypt.salt.RandomSaltGenerator
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    string-output-type: base64
