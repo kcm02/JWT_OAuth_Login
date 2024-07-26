@@ -2,6 +2,9 @@ package com.project.securelogin.config;
 
 import com.project.securelogin.jwt.JwtAuthenticationFilter;
 import com.project.securelogin.jwt.JwtTokenProvider;
+import com.project.securelogin.oauth.handler.OAuth2LoginFailureHandler;
+import com.project.securelogin.oauth.handler.OAuth2LoginSuccessHandler;
+import com.project.securelogin.service.CustomOAuth2UserService;
 import com.project.securelogin.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,9 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oauth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oauth2LoginFailureHandler;
 
     @Bean // 비밀번호 암호화를 위한 PasswordEncoder 빈 생성
     public PasswordEncoder passwordEncoder() {
@@ -51,6 +57,15 @@ public class SecurityConfig {
                 // 폼 로그인 설정
                 .formLogin(form -> form
                         .permitAll() // 로그인 페이지는 누구나 접근 가능
+                )
+                // OAuth 로그인 설정
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .failureHandler(oauth2LoginFailureHandler)
+                        .successHandler(oauth2LoginSuccessHandler)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
 

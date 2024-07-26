@@ -51,27 +51,5 @@ public class CustomUserDetails implements UserDetails {
         return user.isEnabled();
     }
 
-    public int getFailedLoginAttempts() {
-        return user.getFailedLoginAttempts();
-    }
 
-    public void incrementFailedLoginAttempts() {
-        user.incrementFailedLoginAttempts();
-    }
-
-    public void resetFailedLoginAttempts() {
-        user.resetFailedLoginAttempts();
-    }
-
-    public void lockAccount() {
-        user.lockAccount();
-    }
-
-    public void unlockAccount() {
-        user.unlockAccount();
-    }
-
-    public boolean isLockTimeExpired(int lockDurationMinutes) {
-        return user.isLockTimeExpired(lockDurationMinutes);
-    }
 }
