@@ -23,13 +23,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String email;
 
     @CreationTimestamp
@@ -47,6 +44,9 @@ public class User {
 
     private int failedLoginAttempts; // 로그인 시도 횟수
     private LocalDateTime lockTime; // 계정 잠금 해제 시간
+
+    private String socialType; // 소셜 타입 (자체 로그인의 경우 Null)
+    private String socialId; // 소셜 ID  (자체 로그인의 경우 Null)
 
     public void updateUser(UserRequestDTO requestDTO, PasswordEncoder passwordEncoder,String mailVerificationToken) {
         this.username = requestDTO.getUsername();
@@ -93,6 +93,16 @@ public class User {
         }
         LocalDateTime expiryTime = this.lockTime.plusMinutes(lockDurationMinutes);
         return expiryTime.isBefore(LocalDateTime.now()); // 현재 시간이 잠금 만료 시간 이전이면 해제 가능
+    }
+
+    public void updateOAuthUser(String username, String email, String socialType, String socialId) {
+        this.username = username;
+        if (email != null) {
+            this.email = email;
+        }
+        this.socialType = socialType;
+        this.socialId = socialId;
+        this.enabled = true; // OAuth 로그인 후 사용자는 활성화 상태
     }
 
 }

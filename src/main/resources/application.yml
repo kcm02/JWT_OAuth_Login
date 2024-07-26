@@ -8,6 +8,11 @@ spring:
     active: local
   application:
     name: secure-login
+  mvc:
+    web:
+      encoding:
+        charset: UTF-8
+        enabled: true
 
   jpa:
     hibernate:
@@ -19,6 +24,7 @@ spring:
 logging:
   level:
     org.jasypt: DEBUG
+    org.springframework.security: DEBUG
 
 jasypt:
   encryptor:
